@@ -1,76 +1,18 @@
 "use client";
 
-import { Checkbox } from "@heroui/react";
-import Editor, {
-    type BeforeMount,
-    DiffEditor,
-    type DiffEditorProps,
-    type EditorProps,
-} from "@monaco-editor/react";
+import { Breadcrumbs } from "@heroui/react";
 import { useDebounce, useLocalStorage } from "@uidotdev/usehooks";
-import type { editor } from "monaco-editor/editor";
 import { useCallback, useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
-import type { IntersectionOfTypes } from "../../../types/intersection-of-types";
+import { IOEditor } from "@/src/components/io-editor";
 import { format } from "./formatter/format";
-
-const TRANSPARENT_THEME = "transparent";
-
-type MonacoEditor = typeof editor;
-const handleBeforeMount: BeforeMount = (monaco) => {
-    const editor: MonacoEditor = monaco.editor;
-    editor.defineTheme(TRANSPARENT_THEME, {
-        base: "vs-dark",
-        inherit: true,
-        rules: [],
-        colors: {
-            "editor.background": "#00000000",
-            "editorGutter.background": "#00000000",
-            "minimap.background": "#00000000",
-        },
-    });
-};
-
-const EDITOR_OPTIONS: EditorProps["options"] = {
-    renderLineHighlight: "all",
-    renderWhitespace: "all",
-    fontSize: 14,
-    fontFamily: "'Fira Code', 'JetBrains Mono', Consolas, monospace",
-    fontLigatures: true,
-    scrollbar: {
-        verticalScrollbarSize: 8,
-        horizontalScrollbarSize: 8,
-        useShadows: false,
-    },
-    cursorSmoothCaretAnimation: "on",
-    cursorBlinking: "smooth",
-    minimap: {
-        enabled: true,
-        showSlider: "mouseover",
-        renderCharacters: false,
-    },
-};
-
-const EDITOR_PROPS: IntersectionOfTypes<EditorProps, DiffEditorProps> = {
-    className: "overflow-hidden rounded bg-surface",
-    language: "sql",
-    theme: TRANSPARENT_THEME,
-    options: EDITOR_OPTIONS,
-};
 
 export const FormatDmlSqlTool = () => {
     const [sql, setSQL] = useLocalStorage("sql", "");
     const [formatted, setFormatted] = useState("");
     const [formatting, setFormatting] = useState(false);
-    const [diff, setDiff] = useState(false);
     const [duration, setDuration] = useState(0);
 
     const debouncedSQL = useDebounce(sql, 10);
-
-    const onChange = async (value: string | undefined) => {
-        value = value || "";
-        setSQL(value);
-    };
 
     const doFormat = useCallback(async (sql: string) => {
         setFormatting(true);
@@ -94,57 +36,23 @@ export const FormatDmlSqlTool = () => {
     }, [doFormat, debouncedSQL]);
 
     return (
-        <div className="grid h-screen max-h-screen grid-rows-[auto_1fr_auto] gap-2">
-            <div className="flex items-center justify-between bg-surface px-2 py-1">
-                <div className="flex items-center gap-3">
-                    <h1 className="font-semibold">DML SQL Formatter</h1>
-                    <span
-                        className={twMerge(
-                            "loading loading-spinner loading-sm transition-opacity",
-                            formatting ? "opacity-100" : "opacity-0",
-                        )}
-                    ></span>
-                </div>
-
-                <Checkbox isSelected={diff} onChange={setDiff}>
-                    <Checkbox.Content>
-                        <Checkbox.Control>
-                            <Checkbox.Indicator />
-                        </Checkbox.Control>
-                        Show Diff
-                    </Checkbox.Content>
-                </Checkbox>
-            </div>
-            <div className="max-h-full overflow-hidden px-2">
-                {!diff ? (
-                    <div className="grid h-full grid-cols-2 gap-2">
-                        <Editor
-                            {...EDITOR_PROPS}
-                            value={sql}
-                            onChange={onChange}
-                            beforeMount={handleBeforeMount}
-                        />
-                        <Editor
-                            {...EDITOR_PROPS}
-                            value={formatted}
-                            options={{ readOnly: true, ...EDITOR_OPTIONS }}
-                        />
-                    </div>
-                ) : (
-                    <DiffEditor
-                        {...EDITOR_PROPS}
-                        original={sql}
-                        modified={formatted}
-                        keepCurrentOriginalModel
-                        keepCurrentModifiedModel
-                    />
-                )}
-            </div>
-            <div className="overflow-hidden bg-surface px-2 py-1 text-muted text-sm">
-                {formatting
-                    ? "Formatting..."
-                    : `Formatting took ${duration.toFixed(2)}ms`}
-            </div>
-        </div>
+        <IOEditor
+            input={sql}
+            onInputChange={setSQL}
+            output={formatted}
+            header={
+                <Breadcrumbs>
+                    <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                    <Breadcrumbs.Item>DML SQL Formatter</Breadcrumbs.Item>
+                </Breadcrumbs>
+            }
+            footer={
+                <p className="text-muted text-sm">
+                    {formatting
+                        ? "Formatting..."
+                        : `Formatting took ${duration.toFixed(2)}ms`}
+                </p>
+            }
+        />
     );
 };
