@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, TextArea } from "@heroui/react";
 import { useForm } from "@tanstack/react-form";
 import { gfm } from "@truto/turndown-plugin-gfm";
 import html from "prettier/plugins/html";
@@ -78,8 +79,8 @@ export const CleanHTMLTool = () => {
                     <form.Field name="input">
                         {(field) => (
                             <>
-                                <textarea
-                                    className="textarea w-full grow"
+                                <TextArea
+                                    className="w-full grow"
                                     name={field.name}
                                     value={field.state.value}
                                     onBlur={field.handleBlur}
@@ -94,22 +95,16 @@ export const CleanHTMLTool = () => {
                         )}
                     </form.Field>
                 </fieldset>{" "}
-                <button
-                    className="btn"
-                    type="button"
-                    onClick={pasteFromClipboard}
-                >
+                <Button type="button" onClick={pasteFromClipboard}>
                     Paste from clipboard
-                </button>
-                <button className="btn" type="submit">
-                    Convert
-                </button>
+                </Button>
+                <Button type="submit">Convert</Button>
                 <fieldset className="fieldset flex grow flex-col">
                     <legend className="fieldset-legend">Output</legend>
                     <form.Field name="output">
                         {(field) => (
                             <>
-                                <textarea
+                                <TextArea
                                     className="textarea w-full grow"
                                     name={field.name}
                                     value={field.state.value}
@@ -125,9 +120,9 @@ export const CleanHTMLTool = () => {
                         )}
                     </form.Field>
                 </fieldset>
-                <button className="btn" type="button" onClick={copyToClipboard}>
+                <Button type="button" onClick={copyToClipboard}>
                     Copy to clipboard
-                </button>
+                </Button>
             </form>
         </div>
     );

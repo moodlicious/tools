@@ -1,3 +1,4 @@
+import { Card, Typography } from "@heroui/react";
 import Link from "next/link";
 
 const tools = [
@@ -21,22 +22,27 @@ const tools = [
 const Home = () => {
     return (
         <div className="flex flex-col items-center p-8">
-            <h1 className="mb-2 font-bold text-4xl">tools.feli.page</h1>
-            <p className="mb-8 text-base-content/60">
+            <Typography.Heading>Tools</Typography.Heading>
+            <Typography.Paragraph>
                 A collection of useful web developer tools
-            </p>
+            </Typography.Paragraph>
             <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {tools.map((tool) => (
-                    <Link
-                        key={tool.href}
-                        href={tool.href}
-                        className="card bg-base-200 transition-colors hover:bg-base-300"
-                    >
-                        <div className="card-body">
-                            <h2 className="card-title">{tool.name}</h2>
-                            <p>{tool.description}</p>
-                        </div>
-                    </Link>
+                    <Card key={tool.href} className="relative">
+                        <Card.Header>
+                            <Card.Title>
+                                <Link
+                                    href={tool.href}
+                                    className="before:absolute before:inset-0"
+                                >
+                                    {tool.name}
+                                </Link>
+                            </Card.Title>
+                            <Card.Description>
+                                {tool.description}
+                            </Card.Description>
+                        </Card.Header>
+                    </Card>
                 ))}
             </div>
         </div>

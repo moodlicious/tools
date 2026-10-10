@@ -10,6 +10,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@heroui/react": "^3.2.6",
+    "@heroui/styles": "^3.2.6",
     "@monaco-editor/react": "^4.7.0",
     "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-form": "^1.33.5",
@@ -38,7 +40,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.1",
-    "daisyui": "^5.7.28",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "monaco-editor": "^0.57.0",

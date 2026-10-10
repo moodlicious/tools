@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 
 type ClipboardEntry = {
@@ -95,14 +96,13 @@ export const ClipboardInspectorTool = () => {
     return (
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 py-6">
             <div className="flex flex-wrap items-center gap-4">
-                <button
-                    className="btn"
+                <Button
                     type="button"
                     onClick={readClipboard}
-                    disabled={loading}
+                    isDisabled={loading}
                 >
                     {loading ? "Reading..." : "Read clipboard"}
-                </button>
+                </Button>
                 <span className="text-base-content/60 text-sm">
                     Or press Ctrl+V to read the clipboard.
                 </span>

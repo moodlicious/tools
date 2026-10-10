@@ -18,7 +18,9 @@
         "rules": {
             "preset": "recommended",
             "nursery": {
-                "useSortedClasses": { "fix": "safe", "level": "error" }
+                "useSortedClasses": { "fix": "safe", "level": "error" },
+                "useTailwindShorthandClasses": "warn",
+                "noTailwindRawColors": "warn"
             }
         }
     },
