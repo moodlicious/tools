@@ -3,12 +3,10 @@ import ClientOnly from "@/src/components/client-only";
 import { FormatDmlSqlTool } from "./page.client";
 
 export const metadata: Metadata = {
-    title: "Clean HTML",
-    description:
-        "Paste messy HTML and get back clean, formatted, pretty-printed code. Sanitizes content through Markdown and back.",
+    title: "Format DML SQL",
+    description: "Formats PHP SQL strings with Moodle coding standard",
     openGraph: {
-        description:
-            "Paste messy HTML and get back clean, formatted, pretty-printed code. Sanitizes content through Markdown and back.",
+        description: "Formats PHP SQL strings with Moodle coding standard",
         type: "website",
         url: "/tools/clean-html",
     },
