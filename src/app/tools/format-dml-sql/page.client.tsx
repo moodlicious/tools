@@ -93,8 +93,8 @@ export const FormatDmlSqlTool = () => {
     }, [doFormat, debouncedSQL]);
 
     return (
-        <div className="bg-base-100 grid h-screen max-h-screen grid-rows-[auto_1fr_auto] gap-2">
-            <div className="bg-base-200/50 flex items-center justify-between px-2 py-1">
+        <div className="grid h-screen max-h-screen grid-rows-[auto_1fr_auto] gap-2 bg-base-100">
+            <div className="flex items-center justify-between bg-base-200/50 px-2 py-1">
                 <div className="flex items-center gap-3">
                     <h1 className="font-semibold">DML SQL Formatter</h1>
                     <span
@@ -140,7 +140,7 @@ export const FormatDmlSqlTool = () => {
                     />
                 )}
             </div>
-            <div className="bg-base-200/50 text-base-content/50 overflow-hidden px-2 py-1 text-xs">
+            <div className="overflow-hidden bg-base-200/50 px-2 py-1 text-base-content/50 text-xs">
                 {formatting
                     ? "Formatting..."
                     : `Formatting took ${duration.toFixed(2)}ms`}

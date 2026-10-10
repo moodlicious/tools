@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type ClipboardEntry = {
     label: string;
@@ -48,10 +48,10 @@ export const ClipboardInspectorTool = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const showEntries = (next: ClipboardEntry[]) => {
+    const showEntries = useCallback((next: ClipboardEntry[]) => {
         setEntries(next);
         setError(null);
-    };
+    }, []);
 
     const readClipboard = async () => {
         setLoading(true);
@@ -90,7 +90,7 @@ export const ClipboardInspectorTool = () => {
         };
         window.addEventListener("paste", onPaste);
         return () => window.removeEventListener("paste", onPaste);
-    }, []);
+    }, [showEntries]);
 
     return (
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 py-6">
@@ -119,11 +119,12 @@ export const ClipboardInspectorTool = () => {
             )}
             <div className="flex flex-col gap-6">
                 {entries.map((entry, index) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: fix later
                     <div key={index} className="flex flex-col gap-2">
-                        <h2 className="font-mono text-sm font-semibold">
+                        <h2 className="font-mono font-semibold text-sm">
                             {entry.label}
                         </h2>
-                        <pre className="rounded-box bg-base-200 max-h-96 overflow-auto p-4 font-mono text-xs break-words whitespace-pre-wrap">
+                        <pre className="wrap-break-word max-h-96 overflow-auto whitespace-pre-wrap rounded-box bg-base-200 p-4 font-mono text-xs">
                             {entry.data}
                         </pre>
                     </div>

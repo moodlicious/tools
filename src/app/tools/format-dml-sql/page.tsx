@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { FormatDmlSqlTool } from "./page.client";
 import ClientOnly from "@/src/components/client-only";
+import { FormatDmlSqlTool } from "./page.client";
 
 export const metadata: Metadata = {
     title: "Clean HTML",
