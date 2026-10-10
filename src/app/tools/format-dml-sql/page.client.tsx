@@ -37,6 +37,7 @@ export const FormatDmlSqlTool = () => {
 
     return (
         <IOEditor
+            language="sql"
             input={sql}
             onInputChange={setSQL}
             output={formatted}

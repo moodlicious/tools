@@ -1,14 +1,14 @@
 "use client";
 
-import { Button, TextArea } from "@heroui/react";
-import { useForm } from "@tanstack/react-form";
+import { Breadcrumbs, Button } from "@heroui/react";
 import { gfm } from "@truto/turndown-plugin-gfm";
 import html from "prettier/plugins/html";
 import { format } from "prettier/standalone";
+import { useState } from "react";
 import sanitizeHtml from "sanitize-html";
 import { Converter } from "showdown";
 import TurndownService from "turndown";
-import { z } from "zod";
+import { IOEditor } from "@/src/components/io-editor";
 
 const turndown = new TurndownService();
 turndown.use(gfm);
@@ -16,20 +16,13 @@ turndown.use(gfm);
 const converter = new Converter({ tables: true });
 
 export const CleanHTMLTool = () => {
-    const form = useForm({
-        defaultValues: {
-            input: "",
-            output: "",
-        },
-        validators: {
-            onChange: z.object({
-                input: z.string(),
-                output: z.string(),
-            }),
-        },
-        onSubmit: async ({ value }) => {
-            const data = value.input;
-            let output = data;
+    const [input, setInput] = useState("");
+    const [output, setOutput] = useState("");
+
+    const onChange = async (input: string) => {
+        setInput(input);
+        let output = input;
+        try {
             output = output.replaceAll("\u200B", "");
             output = sanitizeHtml(output);
             output = turndown.turndown(output);
@@ -38,9 +31,12 @@ export const CleanHTMLTool = () => {
                 parser: "html",
                 plugins: [html],
             });
-            form.setFieldValue("output", output);
-        },
-    });
+        } catch (error) {
+            output = error instanceof Error ? error.message : String(error);
+        } finally {
+            setOutput(output);
+        }
+    };
 
     const pasteFromClipboard = async () => {
         const data = await navigator.clipboard.read();
@@ -52,78 +48,50 @@ export const CleanHTMLTool = () => {
             .getType("text/html")
             .then((blob) => blob.text());
 
-        form.setFieldValue("input", html);
+        onChange(html);
     };
 
     const copyToClipboard = async () => {
-        const data = form.getFieldValue("output");
         await navigator.clipboard.write([
             new ClipboardItem({
-                "text/plain": data,
-                "text/html": data,
+                "text/plain": output,
+                "text/html": output,
             }),
         ]);
     };
 
     return (
-        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col">
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    form.handleSubmit();
-                }}
-                className="flex flex-1 flex-col gap-6 py-6"
-            >
-                <fieldset className="fieldset flex grow flex-col">
-                    <legend className="fieldset-legend">Input</legend>
-                    <form.Field name="input">
-                        {(field) => (
-                            <>
-                                <TextArea
-                                    className="w-full grow"
-                                    name={field.name}
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) =>
-                                        field.handleChange(e.target.value)
-                                    }
-                                />
-                                {!field.state.meta.isValid && (
-                                    <em>{field.state.meta.errors.join(",")}</em>
-                                )}
-                            </>
-                        )}
-                    </form.Field>
-                </fieldset>{" "}
-                <Button type="button" onClick={pasteFromClipboard}>
-                    Paste from clipboard
-                </Button>
-                <Button type="submit">Convert</Button>
-                <fieldset className="fieldset flex grow flex-col">
-                    <legend className="fieldset-legend">Output</legend>
-                    <form.Field name="output">
-                        {(field) => (
-                            <>
-                                <TextArea
-                                    className="textarea w-full grow"
-                                    name={field.name}
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) =>
-                                        field.handleChange(e.target.value)
-                                    }
-                                />
-                                {!field.state.meta.isValid && (
-                                    <em>{field.state.meta.errors.join(",")}</em>
-                                )}
-                            </>
-                        )}
-                    </form.Field>
-                </fieldset>
-                <Button type="button" onClick={copyToClipboard}>
-                    Copy to clipboard
-                </Button>
-            </form>
-        </div>
+        <IOEditor
+            language="html"
+            input={input}
+            onInputChange={onChange}
+            output={output}
+            header={
+                <Breadcrumbs>
+                    <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                    <Breadcrumbs.Item>Clean HTML</Breadcrumbs.Item>
+                </Breadcrumbs>
+            }
+            actions={
+                <>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        type="button"
+                        onClick={pasteFromClipboard}
+                    >
+                        Paste from clipboard
+                    </Button>
+                    <Button
+                        variant="outline"
+                        type="button"
+                        onClick={copyToClipboard}
+                    >
+                        Copy to clipboard
+                    </Button>
+                </>
+            }
+            footer={null}
+        />
     );
 };

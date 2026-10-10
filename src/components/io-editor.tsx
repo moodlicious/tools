@@ -48,9 +48,10 @@ const EDITOR_OPTIONS: EditorProps["options"] = {
     },
 };
 
-const EDITOR_PROPS: IntersectionOfTypes<EditorProps, DiffEditorProps> = {
+type CommonEditorProps = IntersectionOfTypes<EditorProps, DiffEditorProps>;
+
+const EDITOR_PROPS: CommonEditorProps = {
     className: "overflow-hidden rounded bg-surface",
-    language: "sql",
     theme: TRANSPARENT_THEME,
     options: EDITOR_OPTIONS,
 };
@@ -59,8 +60,10 @@ export type IOEditorProps = {
     input: string;
     onInputChange: (value: string) => void;
     output: string;
-    header: ReactNode | null;
-    footer: ReactNode | null;
+    header?: ReactNode | null | undefined;
+    actions?: ReactNode | null | undefined;
+    footer?: ReactNode | null | undefined;
+    language?: CommonEditorProps["language"];
 };
 
 export const IOEditor = ({
@@ -68,7 +71,9 @@ export const IOEditor = ({
     onInputChange,
     output,
     header,
+    actions,
     footer,
+    language,
 }: IOEditorProps) => {
     const [diff, setDiff] = useState(false);
 
@@ -82,26 +87,31 @@ export const IOEditor = ({
             <header className="flex items-center justify-between bg-surface px-2 py-1">
                 <div className="flex items-center gap-3">{header}</div>
 
-                <Checkbox isSelected={diff} onChange={setDiff}>
-                    <Checkbox.Content>
-                        <Checkbox.Control>
-                            <Checkbox.Indicator />
-                        </Checkbox.Control>
-                        Show Diff
-                    </Checkbox.Content>
-                </Checkbox>
+                <div className="flex items-center gap-3">
+                    {actions}
+                    <Checkbox isSelected={diff} onChange={setDiff}>
+                        <Checkbox.Content>
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            Show Diff
+                        </Checkbox.Content>
+                    </Checkbox>
+                </div>
             </header>
             <div className="max-h-full overflow-hidden px-2">
                 {!diff ? (
                     <div className="grid h-full grid-cols-2 gap-2">
                         <Editor
                             {...EDITOR_PROPS}
+                            language={language}
                             value={input}
                             onChange={onChange}
                             beforeMount={handleBeforeMount}
                         />
                         <Editor
                             {...EDITOR_PROPS}
+                            language={language}
                             value={output}
                             options={{ readOnly: true, ...EDITOR_OPTIONS }}
                         />
@@ -109,6 +119,7 @@ export const IOEditor = ({
                 ) : (
                     <DiffEditor
                         {...EDITOR_PROPS}
+                        language={language}
                         original={input}
                         modified={output}
                         keepCurrentOriginalModel
