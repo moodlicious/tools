@@ -123,7 +123,7 @@ export const ClipboardInspectorTool = () => {
                         <h2 className="font-mono text-sm font-semibold">
                             {entry.label}
                         </h2>
-                        <pre className="max-h-96 overflow-auto rounded-box bg-base-200 p-4 font-mono text-xs whitespace-pre-wrap break-words">
+                        <pre className="rounded-box bg-base-200 max-h-96 overflow-auto p-4 font-mono text-xs break-words whitespace-pre-wrap">
                             {entry.data}
                         </pre>
                     </div>

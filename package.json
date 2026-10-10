@@ -10,6 +10,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-form-devtools": "^0.2.34",
@@ -17,17 +18,21 @@
     "@truto/turndown-plugin-gfm": "^1.0.3",
     "@types/showdown": "^2.0.6",
     "@types/turndown": "^5.0.6",
+    "@uidotdev/usehooks": "^2.4.1",
     "next": "16.3.4",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.10",
+    "prettier-plugin-sql": "^0.20.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sanitize-html": "^2.17.7",
     "showdown": "^2.1.0",
+    "tailwind-merge": "^3.7.0",
     "turndown": "^7.2.4",
     "zod": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bun": "^1.4.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -35,6 +40,7 @@
     "daisyui": "^5.7.28",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "monaco-editor": "^0.57.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"

@@ -11,16 +11,21 @@ const tools = [
         description: "Inspect everything currently on your clipboard.",
         href: "/tools/clipboard-inspector",
     },
+    {
+        name: "Format DML SQL",
+        description: "Format PHP SQL Strings with Moodle coding standard",
+        href: "/tools/format-dml-sql",
+    },
 ] as const;
 
 const Home = () => {
     return (
         <div className="flex flex-col items-center p-8">
-            <h1 className="text-4xl font-bold mb-2">tools.feli.page</h1>
+            <h1 className="mb-2 text-4xl font-bold">tools.feli.page</h1>
             <p className="text-base-content/60 mb-8">
                 A collection of useful web developer tools
             </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full max-w-3xl">
+            <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {tools.map((tool) => (
                     <Link
                         key={tool.href}
