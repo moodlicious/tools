@@ -1,6 +1,7 @@
 import { cn } from "@heroui/react";
 import type { Metadata } from "next";
 import { Geist_Mono, Google_Sans } from "next/font/google";
+import { env } from "../env";
 import "./globals.css";
 
 const googleSans = Google_Sans({
@@ -15,10 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://tools.feli.page"),
+    metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
     title: {
-        default: "tools.feli.page",
-        template: "%s — tools.feli.page",
+        default: `${env.APP_NAME}`,
+        template: `%s — ${env.APP_NAME}`,
     },
     description: "A collection of useful web developer tools",
 };

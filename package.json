@@ -1,5 +1,5 @@
 {
-  "name": "tools.feli.page",
+  "name": "tools",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "@heroui/react": "^3.2.6",
     "@heroui/styles": "^3.2.6",
     "@monaco-editor/react": "^4.7.0",
+    "@t3-oss/env-nextjs": "^0.13.11",
     "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-form-devtools": "^0.2.34",
@@ -30,7 +31,7 @@
     "showdown": "^2.1.0",
     "tailwind-merge": "^3.7.0",
     "turndown": "^7.2.4",
-    "zod": "^4.5.4"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
